@@ -7,18 +7,15 @@ url_disk = 'http://localhost:9200/_cat/allocation?h=disk.percent'
 header = {
     'Content-Type': 'application/json'
 }
-indices_blocked = {"index.blocks.read_only_allow_delete": "null"}
+indices_unblocked = '{"index.blocks.read_only_allow_delete": null}'
 disk_usage = int((requests.get(url_disk)).text)
-# r = int(disk_usage.text)
 
 get_blocked = requests.get(url_blocked).json()
 
 
-# rb = r_blocs.json()
-
 # Check if http://localhost:9200/_all/_settings contains "read_only_allow_delete"
 def check_json(json_arg):
-    data = json.loads(json_arg)
+    data = json.dumps(json_arg)
     if "read_only_allow_delete" in data:
         return "blocked"
     else:
@@ -27,7 +24,7 @@ def check_json(json_arg):
 
 # Unlock indices
 if check_json(get_blocked) == "blocked":
-    requests.put(url_blocked, data=indices_blocked, headers=header)
+    requests.put(url_blocked, data=indices_unblocked, headers=header)
     print('Indexes unblocked, put "index.blocks.read_only_allow_delete": "null"')
 else:
     print('OK')
