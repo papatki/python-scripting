@@ -8,8 +8,8 @@ header = {
     'Content-Type': 'application/json'
 }
 indices_unblocked = '{"index.blocks.read_only_allow_delete": null}'
-disk_usage = int((requests.get(url_disk)).text)
 
+disk_usage = int((requests.get(url_disk)).text)
 get_blocked = requests.get(url_blocked).json()
 
 
@@ -21,6 +21,17 @@ def check_json(json_arg):
     else:
         return "not blocked"
 
+
+def get_disk_usage(json_arg):
+    data = json.dumps(json_arg)
+    if data >= '85':
+        return "full"
+    else:
+        return "free"
+
+
+# print(get_disk_usage(disk_usage))
+# print(disk_usage)
 
 # Unlock indices
 if check_json(get_blocked) == "blocked":
