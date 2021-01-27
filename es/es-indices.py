@@ -30,9 +30,6 @@ def get_disk_usage(json_arg):
         return "free"
 
 
-# print(get_disk_usage(disk_usage))
-# print(disk_usage)
-
 # Unlock indices
 if check_json(get_blocked) == "blocked":
     requests.put(url_blocked, data=indices_unblocked, headers=header)
@@ -41,4 +38,3 @@ else:
     print('OK')
     exit(0)
 
-# disk_usage <= 85
